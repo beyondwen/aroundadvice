@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--定义目标对象-->
+    <bean id="userDao" class="dao.UserDao"/>
+    <!--定义增强-->
+    <bean id="userAdvice" class="advice.UserAdvice"/>
+    <!--定义切面类-->
+    <bean id="userProxyadvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="pattern" value=".*"/>
+        <property name="advice" ref="userAdvice"/>
+    </bean>
+
+    <bean id="userProxyBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="userDao"/>
+        <property name="proxyTargetClass" value="true"/>
+        <property name="interceptorNames" value="userProxyadvice"/>
+    </bean>
+
+</beans>
